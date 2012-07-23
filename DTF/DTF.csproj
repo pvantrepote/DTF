@@ -41,8 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\EnumMapToAttribute.cs" />
+    <Compile Include="Attributes\Extensions\Extensions.cs" />
     <Compile Include="Attributes\MapToAttribute.cs" />
     <Compile Include="Attributes\TransformableToAttribute.cs" />
+    <Compile Include="ITransformable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transform.cs" />
   </ItemGroup>

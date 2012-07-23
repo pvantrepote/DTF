@@ -13,38 +13,9 @@
 
 /* V1.0 Pascal Vantrepote (Tamajii) */
 
-using System;
-
-namespace DTF.Attributes
+namespace DTF
 {
-
-	[AttributeUsage(AttributeTargets.Field)]
-	public class EnumMapToAttribute : Attribute
+	public interface ITransformable
 	{
-		#region Properties
-
-		public object TargetValue { get; set; }
-		public string Alias { get; set; }
-		public bool AsAlias
-		{
-			get { return !string.IsNullOrEmpty(Alias); }
-		}
-
-		#endregion
-
-		#region Constructors
-
-		public EnumMapToAttribute(object targetValue)
-		{
-			TargetValue = targetValue;
-		}
-
-		public EnumMapToAttribute(string alias, object targetValue)
-		{
-			Alias = alias;
-			TargetValue = targetValue;
-		}
-
-		#endregion
 	}
 }
