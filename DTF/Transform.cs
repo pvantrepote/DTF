@@ -48,7 +48,7 @@ namespace DTF
 			foreach (var property in properties)
 			{
 				// Get the mapping attributes, if no attributes, move on to the next property
-				var mapAttributes = property.GetAttributes<MapToAttribute>();
+				var mapAttributes = property.GetAttributes<MapToAttribute>(inType);
 				if (mapAttributes.Length == 0) continue;
 
 				foreach (var mapToAttribute in mapAttributes)

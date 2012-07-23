@@ -17,7 +17,7 @@ using System;
 
 namespace DTF.Attributes
 {
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Interface)]
 	public class TransformableToAttribute : Attribute
 	{
 		#region Properties

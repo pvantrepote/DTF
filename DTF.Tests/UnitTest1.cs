@@ -28,9 +28,15 @@ namespace DTF.Tests
 	}
 
 	[TransformableTo(typeof(Type2))]
-	public class Type1 : ITransformable
+	public interface IType1 : ITransformable
 	{
 		[MapTo("Field1")]
+		string Field2 { get; set; }
+	}
+
+	
+	public class Type1 : IType1
+	{
 		public string Field2 { get; set; }
 
 		[MapTo("Field2")]
@@ -99,7 +105,7 @@ namespace DTF.Tests
 		[TestMethod]
 		public void TestMethod1()
 		{
-			Type1B instance = new Type1B
+			ITransformable instance = new Type1B
 			                  	{
 			                  		Field1 = "AAA",
 			                  		Field2 = "BBB",

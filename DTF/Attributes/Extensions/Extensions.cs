@@ -14,6 +14,7 @@
 /* V1.0 Pascal Vantrepote (Tamajii) */
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -22,21 +23,41 @@ namespace DTF.Attributes.Extensions
 	internal static class Extensions
 	{
 		public static T[] GetAttributes<T>(this Type type)
-			where T : class
+			where T : Attribute
 		{
-			return (T[])type.GetCustomAttributes(typeof(T), true);
+			var attributes = TypeDescriptor.GetAttributes(type);
+
+			return attributes.Cast<Attribute>().Where(attribute => attribute.GetType() == typeof(T)).Cast<T>().ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this MemberInfo memberInfo)
 			where T : class
 		{
-			return (T[])memberInfo.GetCustomAttributes(typeof(T), true);
+			var attributes = Attribute.GetCustomAttributes(memberInfo, typeof(T), true);
+			return attributes as T[];
 		}
 
-		public static T[] GetAttributes<T>(this PropertyInfo propertyInfo)
-			where T : class
+		public static T[] GetAttributes<T>(this PropertyInfo propertyInfo, Type inType)
+			where T : Attribute
 		{
-			return (T[])propertyInfo.GetCustomAttributes(typeof(T), true);
+			var attributes = Attribute.GetCustomAttributes(propertyInfo, typeof(T), true);
+			if (attributes.Length == 0)
+			{
+				// Try the interfaces
+				Type[] interfaces = inType.GetInterfaces();
+				foreach (var type in interfaces)
+				{
+					PropertyInfo info = type.GetProperty(propertyInfo.Name);
+					if (info != null)
+					{
+						attributes = info.GetAttributes<T>(inType);
+						if (attributes.Length > 0)
+							return attributes as T[];
+					}
+				}
+			}
+
+			return attributes as T[];
 		}
 
 		public static TransformableToAttribute FindAttribute(this TransformableToAttribute[] attributes, MapToAttribute mapToAttribute)
