@@ -17,13 +17,14 @@ using System;
 
 namespace DTF.Attributes
 {
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Interface)]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Interface, AllowMultiple = true)]
 	public class TransformableToAttribute : Attribute
 	{
 		#region Properties
 
 		public Type TargetType { get; set; }
 		public String Alias { get; set; }
+		public String DefaultValueProvider { get; set; }
 
 		#endregion
 
@@ -36,9 +37,15 @@ namespace DTF.Attributes
 		}
 
 		public TransformableToAttribute(Type targetType, String alias)
+			: this(targetType, alias, null)
+		{
+		}
+
+		public TransformableToAttribute(Type targetType, String alias, string defaultValueProvider)
 		{
 			Alias = alias;
 			TargetType = targetType;
+			DefaultValueProvider = defaultValueProvider;
 		}
 	
 		#endregion	 

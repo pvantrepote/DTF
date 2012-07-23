@@ -11,6 +11,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
+using System;
 using DTF.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,12 +29,14 @@ namespace DTF.Tests
 	}
 
 	[TransformableTo(typeof(Type2))]
-	public interface IType1 : ITransformable
+	public interface IType1
 	{
 		[MapTo("Field1")]
 		string Field2 { get; set; }
 	}
 
+	public interface IType1B : IType1
+	{}
 	
 	public class Type1 : IType1
 	{
@@ -68,8 +71,13 @@ namespace DTF.Tests
 	[TransformableTo(typeof(NestedType2B))]
 	public class NestedType1B : NestedType1{}
 
-	public class Type1B : Type1
+	[TransformableTo(typeof(Type2B), DefaultValueProvider = "Test")]
+	public class Type1B : Type1, IType1B
 	{
+		public static void Test(Type2B instance)
+		{
+			Console.WriteLine("...");
+		}
 	}
 
 	public class Type2
@@ -81,6 +89,8 @@ namespace DTF.Tests
 		public EnumType2 Enum2 { get; set; }
 		public int Simple2 { get; set; }
 	}
+
+	public class Type2B : Type2 {}
 
 	public class NestedType2
 	{
@@ -105,7 +115,7 @@ namespace DTF.Tests
 		[TestMethod]
 		public void TestMethod1()
 		{
-			ITransformable instance = new Type1B
+			var instance = new Type1B
 			                  	{
 			                  		Field1 = "AAA",
 			                  		Field2 = "BBB",
@@ -123,7 +133,7 @@ namespace DTF.Tests
 			                  		Simple = 12
 			                  	};
 
-			Type2 res = instance.Tranform<Type2>();
+			var res = instance.Tranform<Type2>();
 
 		}
 	}

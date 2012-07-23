@@ -44,16 +44,13 @@ namespace DTF.Attributes.Extensions
 			if (attributes.Length == 0)
 			{
 				// Try the interfaces
-				Type[] interfaces = inType.GetInterfaces();
-				foreach (var type in interfaces)
+				var interfaces = inType.GetInterfaces();
+				foreach (var info in interfaces.Select(type => type.GetProperty(propertyInfo.Name))
+													.Where(info => info != null && info != propertyInfo))
 				{
-					PropertyInfo info = type.GetProperty(propertyInfo.Name);
-					if (info != null)
-					{
-						attributes = info.GetAttributes<T>(inType);
-						if (attributes.Length > 0)
-							return attributes as T[];
-					}
+					attributes = info.GetAttributes<T>(inType);
+					if (attributes.Length > 0)
+						return attributes as T[];
 				}
 			}
 
@@ -64,21 +61,45 @@ namespace DTF.Attributes.Extensions
 		{
 			return attributes.Length == 1 ? attributes[0]
 										  : attributes.FirstOrDefault(transformableToAttribute => (transformableToAttribute.Alias != null) &&
-																								  (transformableToAttribute.Alias.CompareTo(mapToAttribute.AsAlias) == 0));
+																								  (transformableToAttribute.Alias.CompareTo(mapToAttribute.Alias) == 0));
 		}
 
-		public static Type FindType<TOut>(this TransformableToAttribute[] attributes)
+		public static TransformableToAttribute FindType<TOut>(this TransformableToAttribute[] attributes)
 			where TOut : class
 		{
-			Type rootType = typeof(TOut);
+			var rootType = typeof(TOut);
 			foreach (var transformableToAttribute in
-				attributes.Where(transformableToAttribute => (transformableToAttribute.TargetType.IsSubclassOf(rootType)) || 
-														     (transformableToAttribute.TargetType == rootType)))
+				attributes.Where(transformableToAttribute => (transformableToAttribute.TargetType.IsSubclassOf(rootType)) ||
+															 (transformableToAttribute.TargetType == rootType)))
 			{
-				return transformableToAttribute.TargetType;
+				return transformableToAttribute;
 			}
 
-			return rootType.IsAbstract ? attributes[0].TargetType : rootType;
+			return rootType.IsAbstract ? attributes[0] : null;
+		}
+
+		public static MapToAttribute FindMapAttribute(this MapToAttribute[] mapToAttributes, TransformableToAttribute transformableToAttribute)
+		{
+			MapToAttribute found = null;
+			foreach (var mapToAttribute in mapToAttributes)
+			{
+				if (mapToAttribute.DoesHandle(transformableToAttribute) &&
+					((found == null) || (found.AsAlias == false)))
+				{
+					found = mapToAttribute;
+
+					// Stop if the attribute has an alias
+					if (found.AsAlias) return found;
+				}
+			}
+
+			// Return the found on
+			return found;
+		}
+
+		public static bool DoesHandle(this MapToAttribute mapToAttribute, TransformableToAttribute transformableToAttribute)
+		{
+			return mapToAttribute.AsAlias ? transformableToAttribute.Alias.CompareTo(mapToAttribute.Alias) == 0 : true;
 		}
 	}
 }

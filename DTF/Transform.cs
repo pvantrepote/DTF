@@ -22,7 +22,7 @@ namespace DTF
 {
 	public static class Transform
 	{
-		public static TOut Tranform<TOut>(this ITransformable objectToTransform)
+		public static TOut Tranform<TOut>(this object objectToTransform)
 			where TOut : class
 		{
 			// Get the attributes
@@ -31,17 +31,27 @@ namespace DTF
 			if (attributes.Length == 0) return null;
 
 			// Use the attribute first
-			Type outType = attributes.FindType<TOut>();
-			var transformedObject = Activator.CreateInstance(outType);
+			TransformableToAttribute transformableToAttribute = attributes.FindType<TOut>();
+			var transformedObject = Activator.CreateInstance(transformableToAttribute.TargetType);
 
-			// For all properties
-			InitTarget(objectToTransform, outType, transformedObject, inType, attributes);
+			// Setup the targer
+			SetTargetProperties(objectToTransform, transformableToAttribute.TargetType, transformedObject, inType, transformableToAttribute);
 
+			// Ok its done, now check if the user request to be called 
+			if (transformableToAttribute.DefaultValueProvider != null)
+			{
+				var method = objectToTransform.GetType().GetMethod(transformableToAttribute.DefaultValueProvider);
+				if (method != null)
+				{
+					method.Invoke(objectToTransform, new[] { transformedObject });			
+				}
+			}
+	
 			return transformedObject as TOut;
 		}
 
-		private static TOut InitTarget<TOut>(object objectToTransform, Type outType, TOut transformedObject, Type inType,
-										   TransformableToAttribute[] attributes) where TOut : class, new()
+		private static TOut SetTargetProperties<TOut>(object objectToTransform, Type outType, TOut transformedObject, Type inType,
+										   TransformableToAttribute attribute) where TOut : class, new()
 		{
 			// For each property
 			var properties = inType.GetProperties();
@@ -51,20 +61,17 @@ namespace DTF
 				var mapAttributes = property.GetAttributes<MapToAttribute>(inType);
 				if (mapAttributes.Length == 0) continue;
 
-				foreach (var mapToAttribute in mapAttributes)
-				{
-					// Find the TransformableToAttribute, if not continue to the next one
-					var transformableToAttribute = attributes.FindAttribute(mapToAttribute);
-					if (transformableToAttribute == null) continue;
+				// Get the proper mapping attribute from the Transformable attribute
+				var mapToAttribute = mapAttributes.FindMapAttribute(attribute);
+				if (mapToAttribute == null) continue;
 
-					// Get the target property, if not continue to the next one
-					var targetProperty = outType.GetProperty(mapToAttribute.Target);
-					if (targetProperty == null) continue;
+				// Get the target property, if not continue to the next one
+				var targetProperty = outType.GetProperty(mapToAttribute.Target);
+				if (targetProperty == null) continue;
 
-					// Get the value and set the target property
-					var value = GetPropertyValue(mapToAttribute, property, objectToTransform);
-					targetProperty.SetValue(transformedObject, value, null);
-				}
+				// Get the value and set the target property
+				var value = GetPropertyValue(mapToAttribute, property, objectToTransform);
+				targetProperty.SetValue(transformedObject, value, null);
 			}
 
 			return transformedObject;
@@ -85,26 +92,27 @@ namespace DTF
 			
 			// Create the target instance
 			Type outType;
+			TransformableToAttribute attribute = null;
 			if (mapAttribute.TargetType != null)
 			{
 				outType = mapAttribute.TargetType;
 			}
 			else
 			{
-				TransformableToAttribute attribute = attributes.FindAttribute(mapAttribute);
+				attribute = attributes.FindAttribute(mapAttribute);
 				outType = attribute.TargetType;
 			}
 
-			return outType.IsEnum ? GetInstance(sourceProperty, sourceObject, returnType, outType)
-								  : GetInstance(sourceProperty, sourceObject, returnType, outType, attributes);
+			return GetInstance(sourceProperty, sourceObject, returnType, outType, attribute);
 		}
 
-		private static object GetInstance(PropertyInfo sourceProperty, object sourceObject, Type returnType, Type outType, TransformableToAttribute[] attributes)
+		private static object GetInstance(PropertyInfo sourceProperty, object sourceObject, Type returnType, Type outType, TransformableToAttribute attribute)
 		{
-			return InitTarget(sourceProperty.GetValue(sourceObject, null), outType, Activator.CreateInstance(outType), returnType, attributes);
+			return returnType.IsEnum ? GetEnumInstance(sourceProperty, sourceObject, returnType, outType) 
+									 : SetTargetProperties(sourceProperty.GetValue(sourceObject, null), outType, Activator.CreateInstance(outType), returnType, attribute);
 		}
 
-		private static object GetInstance(PropertyInfo sourceProperty, object sourceObject, Type returnType, Type outType)
+		private static object GetEnumInstance(PropertyInfo sourceProperty, object sourceObject, Type returnType, Type outType)
 		{
 			object value = sourceProperty.GetValue(sourceObject, null);
 			var member = returnType.GetMember(value.ToString());
