@@ -23,21 +23,21 @@ namespace DTF
 	public static class Transform
 	{
 		public static TOut Tranform<TOut>(this ITransformable objectToTransform)
-			where TOut : class, new()
+			where TOut : class
 		{
 			// Get the attributes
 			Type inType = objectToTransform.GetType();
 			var attributes = inType.GetAttributes<TransformableToAttribute>();
 			if (attributes.Length == 0) return null;
 
-			// Init results
-			Type outType = typeof(TOut);
-			var transformedObject = new TOut();
+			// Use the attribute first
+			Type outType = attributes.FindType<TOut>();
+			var transformedObject = Activator.CreateInstance(outType);
 
 			// For all properties
 			InitTarget(objectToTransform, outType, transformedObject, inType, attributes);
 
-			return transformedObject;
+			return transformedObject as TOut;
 		}
 
 		private static TOut InitTarget<TOut>(object objectToTransform, Type outType, TOut transformedObject, Type inType,

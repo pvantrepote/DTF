@@ -22,9 +22,9 @@ namespace DTF.Attributes.Extensions
 	internal static class Extensions
 	{
 		public static T[] GetAttributes<T>(this Type type)
-			where T: class 
+			where T : class
 		{
-			return (T[]) type.GetCustomAttributes(typeof (T), true);
+			return (T[])type.GetCustomAttributes(typeof(T), true);
 		}
 
 		public static T[] GetAttributes<T>(this MemberInfo memberInfo)
@@ -44,6 +44,20 @@ namespace DTF.Attributes.Extensions
 			return attributes.Length == 1 ? attributes[0]
 										  : attributes.FirstOrDefault(transformableToAttribute => (transformableToAttribute.Alias != null) &&
 																								  (transformableToAttribute.Alias.CompareTo(mapToAttribute.AsAlias) == 0));
+		}
+
+		public static Type FindType<TOut>(this TransformableToAttribute[] attributes)
+			where TOut : class
+		{
+			Type rootType = typeof(TOut);
+			foreach (var transformableToAttribute in
+				attributes.Where(transformableToAttribute => (transformableToAttribute.TargetType.IsSubclassOf(rootType)) || 
+														     (transformableToAttribute.TargetType == rootType)))
+			{
+				return transformableToAttribute.TargetType;
+			}
+
+			return rootType.IsAbstract ? attributes[0].TargetType : rootType;
 		}
 	}
 }
