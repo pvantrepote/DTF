@@ -22,32 +22,25 @@ namespace DTF.Attributes
 	{
 		#region Properties
 
-		public Type TargetType { get; set; }
+		/// <summary>
+		/// The transformed type
+		/// </summary>
+		public Type Type { get; set; }
+
+		/// <summary>
+		/// Alias of the attribute
+		/// </summary>
 		public String Alias { get; set; }
+
+		/// <summary>
+		/// Default value provider
+		/// </summary>
 		public String DefaultValueProvider { get; set; }
 
 		#endregion
 
 		#region Constructors
 
-		public TransformableToAttribute(Type targetType)
-			: this(targetType, targetType.Name)
-		{
-			
-		}
-
-		public TransformableToAttribute(Type targetType, String alias)
-			: this(targetType, alias, null)
-		{
-		}
-
-		public TransformableToAttribute(Type targetType, String alias, string defaultValueProvider)
-		{
-			Alias = alias;
-			TargetType = targetType;
-			DefaultValueProvider = defaultValueProvider;
-		}
-	
 		#endregion	 
 	}
 

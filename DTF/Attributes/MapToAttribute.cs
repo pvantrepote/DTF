@@ -17,17 +17,11 @@ using System;
 
 namespace DTF.Attributes
 {
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class MapToAttribute : Attribute
 	{
 
 		#region Properties
-
-		/// <summary>
-		/// The target value or property name
-		/// </summary>
-		public object Target { get; set; }
-			
+		
 		/// <summary>
 		/// Alias of the mapping. 
 		/// </summary>

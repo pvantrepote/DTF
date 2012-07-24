@@ -69,8 +69,8 @@ namespace DTF.Attributes.Extensions
 		{
 			var rootType = typeof(TOut);
 			foreach (var transformableToAttribute in
-				attributes.Where(transformableToAttribute => (transformableToAttribute.TargetType.IsSubclassOf(rootType)) ||
-															 (transformableToAttribute.TargetType == rootType)))
+				attributes.Where(transformableToAttribute => (transformableToAttribute.Type.IsSubclassOf(rootType)) ||
+															 (transformableToAttribute.Type == rootType)))
 			{
 				return transformableToAttribute;
 			}

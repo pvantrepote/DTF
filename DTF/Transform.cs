@@ -33,10 +33,10 @@ namespace DTF
 
 			// Use the attribute first
 			TransformableToAttribute transformableToAttribute = attributes.FindType<TOut>();
-			var transformedObject = Activator.CreateInstance(transformableToAttribute.TargetType);
+			var transformedObject = Activator.CreateInstance(transformableToAttribute.Type);
 
 			// Setup the targer
-			SetTargetProperties(inType, objectToTransform, transformableToAttribute.TargetType, transformedObject, transformableToAttribute);
+			SetTargetProperties(inType, objectToTransform, transformableToAttribute.Type, transformedObject, transformableToAttribute);
 
 			// Ok its done, now check if the user request to be called 
 			if (transformableToAttribute.DefaultValueProvider != null)
@@ -67,8 +67,15 @@ namespace DTF
 				var mapToAttribute = mapAttributes.FindMapAttribute(attribute);
 				if (mapToAttribute == null) continue;
 
+				// For now we support only MapToProperty
+				if ((mapToAttribute is MapToPropertyAttribute) == false)
+					continue;
+
 				// Get the target property, if not continue to the next one
-				var target = mapToAttribute.Target as string;
+				var mapToPropertyAttribute = (MapToPropertyAttribute) mapToAttribute;
+				var target = mapToPropertyAttribute.Name;
+
+				// If no name is provided, use the same as the source property
 				var targetProperty = (string.IsNullOrEmpty(target)) ? targetReturnType.GetProperty(property.Name) 
 																	: targetReturnType.GetProperty(target);
 				if (targetProperty == null) continue;
@@ -103,9 +110,12 @@ namespace DTF
 			var attributes = returnType.GetAttributes<TransformableToAttribute>();
 
 			// No attributes, just return the value
-			if (attributes.Length == 0) 
-				return sourcePropertyValue;
-			
+			if (attributes.Length == 0)
+			{
+				return (mapAttribute is MapToValueAttribute) ? ((MapToValueAttribute) mapAttribute).Value 
+															 : sourcePropertyValue;
+			}
+				
 			// Create the target instance
 			Type targetPropertyType;
 			TransformableToAttribute attribute = null;
@@ -116,24 +126,29 @@ namespace DTF
 			else
 			{
 				attribute = attributes.FindAttribute(mapAttribute);
-				targetPropertyType = attribute.TargetType;
+				targetPropertyType = attribute.Type;
 			}
 
-			return GetInstance(sourceProperty, sourceObject, returnType, sourcePropertyValue, targetPropertyType, attribute);
+			if (mapAttribute is MapToValueAttribute)
+			{
+				return ((MapToValueAttribute) mapAttribute).Value;
+			}
+
+			// Special for enum (for now, may be more later)
+			return returnType.IsEnum ? GetEnumValue(sourcePropertyValue, returnType, targetPropertyType) 
+									 : GetInstance(returnType, sourcePropertyValue, targetPropertyType, attribute);
 		}
 
-		private static object GetInstance(PropertyInfo sourceProperty, object sourceObject, Type sourceReturnType, object sourcePropertyValue, Type targetPropertyType, TransformableToAttribute attribute)
+		private static object GetInstance(Type sourceReturnType, object sourcePropertyValue, Type targetPropertyType, TransformableToAttribute attribute)
 		{
-			return sourceReturnType.IsEnum ? GetValueInstance(sourceProperty, sourceObject, sourceReturnType, targetPropertyType)
-									 : SetTargetProperties(sourceReturnType, sourcePropertyValue, targetPropertyType, Activator.CreateInstance(targetPropertyType), attribute);
+			return SetTargetProperties(sourceReturnType, sourcePropertyValue, targetPropertyType, Activator.CreateInstance(targetPropertyType), attribute);
 		}
 
-		private static object GetValueInstance(PropertyInfo sourceProperty, object sourceObject, Type returnType, Type outType)
+		private static object GetEnumValue(object sourcePropertyValue, Type sourcePropertyReturnType, Type targetPropertyReturnType)
 		{
-			object value = sourceProperty.GetValue(sourceObject, null);
-			var member = returnType.GetMember(value.ToString());
-			var enumMapToAttributes = member[0].GetAttributes<MapToAttribute>();
-			return enumMapToAttributes.Length == 0 ? Activator.CreateInstance(outType) : enumMapToAttributes[0].Target;
+			var member = sourcePropertyReturnType.GetMember(sourcePropertyValue.ToString());
+			var enumMapToAttributes = member[0].GetAttributes<MapToValueAttribute>();
+			return enumMapToAttributes.Length == 0 ? Activator.CreateInstance(targetPropertyReturnType) : enumMapToAttributes[0].Value;
 		}
 	}
 }

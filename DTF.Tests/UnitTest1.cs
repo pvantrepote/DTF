@@ -11,27 +11,26 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-using System;
 using DTF.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DTF.Tests
 {
-	[TransformableTo(typeof(EnumType2))]
+	[TransformableTo(Type = typeof(EnumType2))]
 	public enum EnumType1
 	{
-		[MapTo(Target = EnumType2.Four)]
+		[MapToValue(Value = EnumType2.Four)]
 		One,
-		[MapTo(Target = EnumType2.Five)]
+		[MapToValue(Value = EnumType2.Five)]
 		Two,
-		[MapTo(Target = EnumType2.Six)]
+		[MapToValue(Value = EnumType2.Six)]
 		Three,
 	}
 
-	[TransformableTo(typeof(Type2))]
+	[TransformableTo(Type = typeof(Type2))]
 	public interface IType1
 	{
-		[MapTo(Target = "Bla")]
+		[MapToProperty(Name = "Bla")]
 		string Field2 { get; set; }
 	}
 
@@ -42,41 +41,42 @@ namespace DTF.Tests
 	{
 		public string Field2 { get; set; }
 
-		[MapTo(Target = "Field2")]
+		[MapToProperty(Name = "Field2")]
 		public string Field1 { get; set; }
 
-		[MapTo(Target = "NType2")]
+		[MapToProperty(Name = "NType2")]
 		public NestedType1 NType1 { get; set; }
 
-		[MapTo(Target = "NType2B")]
+		[MapToProperty(Name = "NType2B")]
 		public virtual NestedType1 NType1B { get; set; }
 
-		[MapTo(Target = "Simple2")]
+		[MapToValue(Name = "Simple2", Value = 12345)]
 		public int Simple { get; set; }
 
-		[MapTo(Target = "Enum2")]
+		[MapToProperty(Name = "Enum2")]
 		public EnumType1 Enum1 { get; set; }
 	}
 
-	[TransformableTo(typeof(NestedType2))]
+	[TransformableTo(Type = typeof(NestedType2))]
 	public class NestedType1
 	{
-		[MapTo(Target = "Field1")]
+		[MapToProperty(Name = "Field1")]
 		public string Field1 { get; set; }
 
-		[MapTo(Target = "Field2")]
+		[MapToProperty(Name = "Field2")]
 		public string Field2 { get; set; }
 	}
 
-	[TransformableTo(typeof(NestedType2B))]
+	[TransformableTo(Type = typeof(NestedType2B))]
 	public class NestedType1B : NestedType1{}
 
-	[TransformableTo(typeof(Type2B), DefaultValueProvider = "Test")]
+	[TransformableTo(Type = typeof(Type2B), 
+					 DefaultValueProvider = "Test")]
 	public class Type1B : Type1, IType1B
 	{
 		public static void Test(Type2B instance)
 		{
-			Console.WriteLine("...");
+			instance.other = 15.0f;
 		}
 	}
 
@@ -88,6 +88,8 @@ namespace DTF.Tests
 		public NestedType2 NType2B { get; set; }
 		public EnumType2 Enum2 { get; set; }
 		public int Simple2 { get; set; }
+
+		public float other { get; set; }
 	}
 
 	public class Type2B : Type2 {}

@@ -3,14 +3,14 @@ using DTF.Attributes;
 
 namespace DTF.Tests.Types
 {
-	[TransformableTo(typeof(TargetEnum))]
+	[TransformableTo(Type = typeof(TargetEnum))]
 	public enum TestEnumeration
 	{
-		[MapTo(Target = TargetEnum.Four)]
+		[MapToValue(Value = TargetEnum.Four)]
 		One,
-		[MapTo(Target = TargetEnum.Five)]
+		[MapToValue(Value = TargetEnum.Five)]
 		Two,
-		[MapTo(Target = TargetEnum.Six)]
+		[MapToValue(Value = TargetEnum.Six)]
 		Three,
 	}
 

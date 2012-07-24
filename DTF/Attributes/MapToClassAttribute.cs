@@ -17,8 +17,8 @@ using System;
 
 namespace DTF.Attributes
 {
-	[AttributeUsage(AttributeTargets.Property)]
-	public class MapToClassAttribute : MapToAttribute
+	[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+	public class MapToClassAttribute : MapToPropertyAttribute
 	{
 		/// <summary>
 		/// The class target type
