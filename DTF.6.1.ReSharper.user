@@ -1,0 +1,229 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">False</setting>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="public" priority="14" />
+      <Item value="static" priority="6" />
+      <Item value="this" priority="5" />
+      <Item value="return" priority="16" />
+      <Item value="Tranform`1" priority="0" />
+      <Item value="TOut`0" priority="5" />
+      <Item value="ITransformable`0" priority="1" />
+      <Item value="instance" priority="0" />
+      <Item value="Type2`0" priority="1" />
+      <Item value="virtual" priority="0" />
+      <Item value="override" priority="1" />
+      <Item value="class" priority="5" />
+      <Item value="typeof" priority="3" />
+      <Item value="Type`0" priority="8" />
+      <Item value="TargetType" priority="0" />
+      <Item value="targetType" priority="1" />
+      <Item value="NType1B" priority="0" />
+      <Item value="new" priority="3" />
+      <Item value="var" priority="3" />
+      <Item value="sourceObject" priority="3" />
+      <Item value="null" priority="17" />
+      <Item value="if" priority="16" />
+      <Item value="sourcePropertyValue" priority="1" />
+      <Item value="attributes" priority="13" />
+      <Item value="Length" priority="4" />
+      <Item value="returnType" priority="5" />
+      <Item value="interface" priority="1" />
+      <Item value="T`0" priority="4" />
+      <Item value="type" priority="5" />
+      <Item value="true" priority="1" />
+      <Item value="where" priority="2" />
+      <Item value="else" priority="0" />
+      <Item value="memberInfo" priority="2" />
+      <Item value="PropertyInfo`0" priority="1" />
+      <Item value="propertyInfo" priority="4" />
+      <Item value="property" priority="0" />
+      <Item value="MapToAttribute`0" priority="3" />
+      <Item value="inType" priority="0" />
+      <Item value="TransformableToAttribute`0" priority="2" />
+      <Item value="out" priority="0" />
+      <Item value="Activator`0" priority="0" />
+      <Item value="outType" priority="3" />
+      <Item value="as" priority="1" />
+      <Item value="for" priority="3" />
+      <Item value="foreach" priority="9" />
+      <Item value="transformableToAttribute" priority="8" />
+      <Item value="rootType" priority="3" />
+      <Item value="FindType`0" priority="0" />
+      <Item value="Attribute`0" priority="6" />
+      <Item value="IType1`0" priority="0" />
+      <Item value="AttributeCollection`0" priority="0" />
+      <Item value="attribute" priority="5" />
+      <Item value="ListBindableAttribute`0" priority="1" />
+      <Item value="List&lt;Attribute&gt;" priority="0" />
+      <Item value="attrs" priority="6" />
+      <Item value="TypeDescriptor`0" priority="0" />
+      <Item value="ArgumentOutOfRangeException`0" priority="0" />
+      <Item value="InterfaceMapping`0" priority="1" />
+      <Item value="info" priority="2" />
+      <Item value="Action" priority="1" />
+      <Item value="GetCustomAttribute`0" priority="0" />
+      <Item value="string" priority="2" />
+      <Item value="List&lt;T&gt;" priority="0" />
+      <Item value="interfaceType" priority="0" />
+      <Item value="typedAttribute" priority="1" />
+      <Item value="false" priority="1" />
+      <Item value="GetInstance`0" priority="0" />
+      <Item value="mapToAttribute" priority="7" />
+      <Item value="bool" priority="0" />
+      <Item value="mapToAttributes" priority="0" />
+      <Item value="found" priority="4" />
+      <Item value="mapAttributes" priority="0" />
+      <Item value="FindMapAttribute`0" priority="0" />
+      <Item value="const" priority="0" />
+      <Item value="String`0" priority="0" />
+      <Item value="DefaultValueProvider" priority="4" />
+      <Item value="alias" priority="0" />
+      <Item value="void" priority="1" />
+      <Item value="object" priority="1" />
+      <Item value="inInstance" priority="2" />
+      <Item value="method" priority="1" />
+      <Item value="outInstance" priority="0" />
+      <Item value="objectToTransform" priority="0" />
+      <Item value="transformedObject" priority="0" />
+      <Item value="AllowMultiple" priority="0" />
+      <Item value="TIn`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:DTF.Tests.Type1B">
+      <Item value="Tranform`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Reflection.PropertyInfo">
+      <Item value="GetValue`0" priority="0" />
+      <Item value="GetAttributes`1" priority="1" />
+      <Item value="Name" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Object">
+      <Item value="GetType`0" priority="2" />
+      <Item value="ToString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Type">
+      <Item value="GetCustomAttributes`0" priority="0" />
+      <Item value="GetAttributes`1" priority="3" />
+      <Item value="IsSubclassOf`0" priority="0" />
+      <Item value="IsAbstract" priority="0" />
+      <Item value="Attributes" priority="0" />
+      <Item value="GetInterfaces`0" priority="1" />
+      <Item value="GetProperty`0" priority="0" />
+      <Item value="GetMember`0" priority="0" />
+      <Item value="IsEnum" priority="0" />
+      <Item value="ToString`0" priority="0" />
+      <Item value="GetMethod`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:DTF.Attributes.TransformableToAttribute">
+      <Item value="TargetType" priority="6" />
+      <Item value="GetType`0" priority="1" />
+      <Item value="Alias" priority="0" />
+      <Item value="EndInitialization`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Activator">
+      <Item value="CreateInstance`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.AttributeTargets">
+      <Item value="Interface" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.ComponentModel.TypeDescriptor">
+      <Item value="GetAttributes`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:TSource">
+      <Item value="GetType`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="Add`0" priority="1" />
+      <Item value="Count" priority="0" />
+      <Item value="ToArray`0" priority="0" />
+      <Item value="AddRange`0" priority="2" />
+      <Item value="Contains`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IEnumerable`1">
+      <Item value="ToArray`1" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Attribute">
+      <Item value="GetCustomAttributes`0" priority="0" />
+      <Item value="GetCustomAttribute`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:">
+      <Item value="GetType`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:DTF.Attributes.MapToAttribute">
+      <Item value="Alias" priority="2" />
+      <Item value="AsAlias" priority="2" />
+      <Item value="DoesHandle`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Attribute">
+      <Item value="GetType`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="CompareTo`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Reflection.MethodInfo">
+      <Item value="Invoke`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Console">
+      <Item value="WriteLine`0" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:EnumMapToAttribute.cs" caret="680" fromTop="13" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="1203" fromTop="28" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:TransformableToAttribute.cs" caret="870" fromTop="6" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:MapToAttribute.cs" caret="1383" fromTop="40" />
+      <File id="BFF02ADD-1BE2-4BD2-9E99-351F61D651D7/f:UnitTest1.cs" caret="3300" fromTop="40" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="1154" fromTop="26" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="4286" fromTop="33" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="20" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="17" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="28" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="44" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="19" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="2926" fromTop="17" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="45" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="2984" fromTop="25" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="2496" fromTop="15" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="46" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="51" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="7" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="0" fromTop="0" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/d:Extensions/f:Extensions.cs" caret="3665" fromTop="55" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:TransformableToAttribute.cs" caret="1079" fromTop="26" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:TransformableToAttribute.cs" caret="1341" fromTop="40" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:TransformableToAttribute.cs" caret="1569" fromTop="52" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:TransformableToAttribute.cs" caret="1569" fromTop="44" />
+      <File id="BFF02ADD-1BE2-4BD2-9E99-351F61D651D7/f:UnitTest1.cs" caret="1073" fromTop="24" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:TransformableToAttribute.cs" caret="1569" fromTop="37" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="1849" fromTop="46" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="1846" fromTop="43" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="1842" fromTop="48" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="1799" fromTop="45" />
+      <File id="BFF02ADD-1BE2-4BD2-9E99-351F61D651D7/f:UnitTest1.cs" caret="1933" fromTop="19" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/d:Attributes/f:TransformableToAttribute.cs" caret="870" fromTop="6" />
+      <File id="BFF02ADD-1BE2-4BD2-9E99-351F61D651D7/f:UnitTest1.cs" caret="1009" fromTop="25" />
+      <File id="B7BC7801-0DE1-49A8-8C11-812E6D57FE22/f:Transform.cs" caret="929" fromTop="23" />
+      <File id="BFF02ADD-1BE2-4BD2-9E99-351F61D651D7/f:UnitTest1.cs" caret="3303" fromTop="28" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False" />
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>

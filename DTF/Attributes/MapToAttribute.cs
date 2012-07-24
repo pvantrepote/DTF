@@ -17,15 +17,30 @@ using System;
 
 namespace DTF.Attributes
 {
-	[AttributeUsage(AttributeTargets.Property)]
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class MapToAttribute : Attribute
 	{
 
 		#region Properties
 
-		public string Target { get; set; }
-		public Type TargetType { get; set; }
+		/// <summary>
+		/// The target value or property name
+		/// </summary>
+		public object Target { get; set; }
+			
+		/// <summary>
+		/// Alias of the mapping. 
+		/// </summary>
 		public string Alias { get; set; }
+
+		/// <summary>
+		/// The method to call before setting the value [object GetValue(sourcevalue, sourceproperty)]
+		/// </summary>
+		public string ValueProcessingMethod { get; set; }
+
+		/// <summary>
+		/// Return true if contains an alias
+		/// </summary>
 		public bool AsAlias
 		{
 			get { return !string.IsNullOrEmpty(Alias); }
@@ -35,22 +50,7 @@ namespace DTF.Attributes
 
 		#region Constructors
 
-		public MapToAttribute(string target)
-		{
-			Target = target;
-		}
 
-		public MapToAttribute(string target, Type targetType)
-		{
-			Target = target;
-			TargetType = targetType;
-		}
-
-		public MapToAttribute(string alias, string target)
-		{
-			Alias = alias;
-			Target = target;
-		}
 
 		#endregion
 

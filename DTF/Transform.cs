@@ -22,6 +22,7 @@ namespace DTF
 {
 	public static class Transform
 	{
+
 		public static TOut Tranform<TOut>(this object objectToTransform)
 			where TOut : class
 		{
@@ -35,7 +36,7 @@ namespace DTF
 			var transformedObject = Activator.CreateInstance(transformableToAttribute.TargetType);
 
 			// Setup the targer
-			SetTargetProperties(objectToTransform, transformableToAttribute.TargetType, transformedObject, inType, transformableToAttribute);
+			SetTargetProperties(inType, objectToTransform, transformableToAttribute.TargetType, transformedObject, transformableToAttribute);
 
 			// Ok its done, now check if the user request to be called 
 			if (transformableToAttribute.DefaultValueProvider != null)
@@ -50,15 +51,16 @@ namespace DTF
 			return transformedObject as TOut;
 		}
 
-		private static TOut SetTargetProperties<TOut>(object objectToTransform, Type outType, TOut transformedObject, Type inType,
-										   TransformableToAttribute attribute) where TOut : class, new()
+		private static TOut SetTargetProperties<TOut>(Type objectType, object objectToTransform, 
+													  Type targetReturnType, TOut transformedObject,
+													  TransformableToAttribute attribute) where TOut : class, new()
 		{
 			// For each property
-			var properties = inType.GetProperties();
+			var properties = objectType.GetProperties();
 			foreach (var property in properties)
 			{
 				// Get the mapping attributes, if no attributes, move on to the next property
-				var mapAttributes = property.GetAttributes<MapToAttribute>(inType);
+				var mapAttributes = property.GetAttributes<MapToAttribute>(objectType);
 				if (mapAttributes.Length == 0) continue;
 
 				// Get the proper mapping attribute from the Transformable attribute
@@ -66,11 +68,24 @@ namespace DTF
 				if (mapToAttribute == null) continue;
 
 				// Get the target property, if not continue to the next one
-				var targetProperty = outType.GetProperty(mapToAttribute.Target);
+				var target = mapToAttribute.Target as string;
+				var targetProperty = (string.IsNullOrEmpty(target)) ? targetReturnType.GetProperty(property.Name) 
+																	: targetReturnType.GetProperty(target);
 				if (targetProperty == null) continue;
 
 				// Get the value and set the target property
 				var value = GetPropertyValue(mapToAttribute, property, objectToTransform);
+
+				// Check if the user specified a processing method
+				if (string.IsNullOrEmpty(mapToAttribute.ValueProcessingMethod) == false)
+				{
+					var methodInfo = objectType.GetMethod(mapToAttribute.ValueProcessingMethod);
+					if (methodInfo != null)
+					{
+						value = methodInfo.Invoke(objectToTransform, new[] {value, property});
+					}
+				}
+
 				targetProperty.SetValue(transformedObject, value, null);
 			}
 
@@ -83,41 +98,42 @@ namespace DTF
 			
 			// Get attributes from the source value type if not null otherwise use the return type
 			Type returnType = sourcePropertyValue != null ? sourcePropertyValue.GetType() 
-													 : sourceProperty.GetGetMethod().ReturnType;
+													      : sourceProperty.GetGetMethod().ReturnType;
 
 			var attributes = returnType.GetAttributes<TransformableToAttribute>();
 
 			// No attributes, just return the value
-			if (attributes.Length == 0) return sourceProperty.GetValue(sourceObject, null);
+			if (attributes.Length == 0) 
+				return sourcePropertyValue;
 			
 			// Create the target instance
-			Type outType;
+			Type targetPropertyType;
 			TransformableToAttribute attribute = null;
-			if (mapAttribute.TargetType != null)
+			if (mapAttribute is MapToClassAttribute)
 			{
-				outType = mapAttribute.TargetType;
+				targetPropertyType = (mapAttribute as MapToClassAttribute).TargetType;
 			}
 			else
 			{
 				attribute = attributes.FindAttribute(mapAttribute);
-				outType = attribute.TargetType;
+				targetPropertyType = attribute.TargetType;
 			}
 
-			return GetInstance(sourceProperty, sourceObject, returnType, outType, attribute);
+			return GetInstance(sourceProperty, sourceObject, returnType, sourcePropertyValue, targetPropertyType, attribute);
 		}
 
-		private static object GetInstance(PropertyInfo sourceProperty, object sourceObject, Type returnType, Type outType, TransformableToAttribute attribute)
+		private static object GetInstance(PropertyInfo sourceProperty, object sourceObject, Type sourceReturnType, object sourcePropertyValue, Type targetPropertyType, TransformableToAttribute attribute)
 		{
-			return returnType.IsEnum ? GetEnumInstance(sourceProperty, sourceObject, returnType, outType) 
-									 : SetTargetProperties(sourceProperty.GetValue(sourceObject, null), outType, Activator.CreateInstance(outType), returnType, attribute);
+			return sourceReturnType.IsEnum ? GetValueInstance(sourceProperty, sourceObject, sourceReturnType, targetPropertyType)
+									 : SetTargetProperties(sourceReturnType, sourcePropertyValue, targetPropertyType, Activator.CreateInstance(targetPropertyType), attribute);
 		}
 
-		private static object GetEnumInstance(PropertyInfo sourceProperty, object sourceObject, Type returnType, Type outType)
+		private static object GetValueInstance(PropertyInfo sourceProperty, object sourceObject, Type returnType, Type outType)
 		{
 			object value = sourceProperty.GetValue(sourceObject, null);
 			var member = returnType.GetMember(value.ToString());
-			var enumMapToAttributes = member[0].GetAttributes<EnumMapToAttribute>();
-			return enumMapToAttributes.Length == 0 ? Activator.CreateInstance(outType) : enumMapToAttributes[0].TargetValue;
+			var enumMapToAttributes = member[0].GetAttributes<MapToAttribute>();
+			return enumMapToAttributes.Length == 0 ? Activator.CreateInstance(outType) : enumMapToAttributes[0].Target;
 		}
 	}
 }

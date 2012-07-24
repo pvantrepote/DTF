@@ -20,18 +20,18 @@ namespace DTF.Tests
 	[TransformableTo(typeof(EnumType2))]
 	public enum EnumType1
 	{
-		[EnumMapTo(EnumType2.Four)]
+		[MapTo(Target = EnumType2.Four)]
 		One,
-		[EnumMapTo(EnumType2.Five)]
+		[MapTo(Target = EnumType2.Five)]
 		Two,
-		[EnumMapTo(EnumType2.Six)]
+		[MapTo(Target = EnumType2.Six)]
 		Three,
 	}
 
 	[TransformableTo(typeof(Type2))]
 	public interface IType1
 	{
-		[MapTo("Field1")]
+		[MapTo(Target = "Bla")]
 		string Field2 { get; set; }
 	}
 
@@ -42,29 +42,29 @@ namespace DTF.Tests
 	{
 		public string Field2 { get; set; }
 
-		[MapTo("Field2")]
+		[MapTo(Target = "Field2")]
 		public string Field1 { get; set; }
 
-		[MapTo("NType2")]
+		[MapTo(Target = "NType2")]
 		public NestedType1 NType1 { get; set; }
 
-		[MapTo("NType2B")]
+		[MapTo(Target = "NType2B")]
 		public virtual NestedType1 NType1B { get; set; }
 
-		[MapTo("Simple2")]
+		[MapTo(Target = "Simple2")]
 		public int Simple { get; set; }
 
-		[MapTo("Enum2")]
+		[MapTo(Target = "Enum2")]
 		public EnumType1 Enum1 { get; set; }
 	}
 
 	[TransformableTo(typeof(NestedType2))]
 	public class NestedType1
 	{
-		[MapTo("Field1")]
+		[MapTo(Target = "Field1")]
 		public string Field1 { get; set; }
-		
-		[MapTo("Field2")]
+
+		[MapTo(Target = "Field2")]
 		public string Field2 { get; set; }
 	}
 

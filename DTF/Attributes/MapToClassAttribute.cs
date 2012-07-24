@@ -17,34 +17,13 @@ using System;
 
 namespace DTF.Attributes
 {
-
-	[AttributeUsage(AttributeTargets.Field)]
-	public class EnumMapToAttribute : Attribute
+	[AttributeUsage(AttributeTargets.Property)]
+	public class MapToClassAttribute : MapToAttribute
 	{
-		#region Properties
+		/// <summary>
+		/// The class target type
+		/// </summary>
+		public Type TargetType { get; set; }
 
-		public object TargetValue { get; set; }
-		public string Alias { get; set; }
-		public bool AsAlias
-		{
-			get { return !string.IsNullOrEmpty(Alias); }
-		}
-
-		#endregion
-
-		#region Constructors
-
-		public EnumMapToAttribute(object targetValue)
-		{
-			TargetValue = targetValue;
-		}
-
-		public EnumMapToAttribute(string alias, object targetValue)
-		{
-			Alias = alias;
-			TargetValue = targetValue;
-		}
-
-		#endregion
 	}
 }
